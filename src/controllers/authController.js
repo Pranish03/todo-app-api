@@ -1,13 +1,14 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../config/db.js";
+import { setCookie, clearCookie } from "../utils/generatetoken.js";
 
 //  REGISTER
 export const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { full_name, email, password } = req.body;
 
     // Check required fields
-    if (!name || !email || !password) {
+    if (!full_name || !email || !password) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -31,12 +32,12 @@ export const register = async (req, res) => {
 
     // Create User
     const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword,
-      },
-    });
+  data: {
+    full_name,
+    email,
+    password: hashedPassword,
+  },
+});
 
     return res.status(201).json({
       success: true,
@@ -92,6 +93,8 @@ export const login = async (req, res) => {
       });
     }
 
+    const token = setCookie(res, user.id);
+
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -100,6 +103,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
       },
+      token
     });
   } catch (error) {
     console.log(error);
@@ -114,7 +118,12 @@ export const login = async (req, res) => {
 // Logout
 export const logout = async (req, res) => {
   try {
-    // Code below
+    clearCookie(res);
+
+    return res.status(200).json({
+      success: true,
+      message: "Logout successful",
+    });
   } catch (error) {
     console.log(error);
 
@@ -136,4 +145,5 @@ export const me = async (req, res) => {
       message: "Internal server error",
     });
   }
+  
 };
