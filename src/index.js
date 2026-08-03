@@ -5,15 +5,15 @@ import { connectDatabase } from "./config/db.js";
 connectDatabase();
 
 //import Routes
-import authroutes from "../src/routes/authroutes.js"
-import todoroutes from "../src/routes/todoroutes.js"
+//import authroutes from "../src/routes/authRoutes.js"
 
 
-config();
+
+
 
 //Api routes
 
-app.use("/auth",authroutes);
+
 
 
 const app = express();
