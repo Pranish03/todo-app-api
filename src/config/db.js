@@ -1,5 +1,5 @@
-import { PrismaClient } from "../../src/generated/prisma/index.js";
 import { PrismaNeon } from "@prisma/adapter-neon";
+import { PrismaClient } from "../../src/generated/prisma/index.js";
 
 const adapter = new PrismaNeon({
   connectionString: process.env.DATABASE_URL,
@@ -23,4 +23,4 @@ const connectDatabase = async () => {
   }
 };
 
-export { prisma, connectDatabase };
+export { connectDatabase, prisma };
