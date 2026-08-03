@@ -13,5 +13,35 @@ datasource db {
 }
 
 model User {
-  id String @id @default(uuid())
+  id        String @id @default(uuid())
+  full_name String
+  email     String @unique
+  password  String
+
+  createdAt DateTime @default(now())
+}
+
+model tasks {
+  id          String        @id @default(uuid())
+  user_id     String        @default(uuid())
+  title       String        @unique
+  description String
+  status      IsStatus      @default(todo)
+  priority    Watchpriority
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+
+  @@unique([id, user_id])
+}
+
+enum IsStatus {
+  todo
+  ongoing
+  completed
+}
+
+enum Watchpriority {
+  low
+  medium
+  high
 }
