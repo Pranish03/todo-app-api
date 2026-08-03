@@ -1,9 +1,7 @@
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "../generated/prisma/index.js";
+import { prisma } from "../config/db.js";
 
-const prisma = new PrismaClient();
-
-//  REGISTER 
+//  REGISTER
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -85,10 +83,7 @@ export const login = async (req, res) => {
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(
-      password,
-      user.password
-    );
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -129,7 +124,6 @@ export const logout = async (req, res) => {
     });
   }
 };
-
 
 export const me = async (req, res) => {
   try {
