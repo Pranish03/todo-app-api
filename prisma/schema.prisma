@@ -13,12 +13,12 @@ datasource db {
 }
 
 model User {
-  id        String @id @default(uuid())
+  id        String   @id @default(uuid())
   full_name String
-  email     String @unique
+  email     String   @unique
   password  String
-
   createdAt DateTime @default(now())
+  tasks     tasks[]
 }
 
 model tasks {
@@ -30,6 +30,8 @@ model tasks {
   priority    Watchpriority
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now())
+
+  user User @relation(references: [id], fields: [user_id], onDelete: Cascade)
 
   @@unique([id, user_id])
 }
