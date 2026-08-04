@@ -5,15 +5,7 @@ import { setCookie, clearCookie } from "../utils/generatetoken.js";
 //  REGISTER
 export const register = async (req, res) => {
   try {
-    const { full_name, email, password } = req.body;
-
-    // Check required fields
-    if (!full_name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
+    const { full_name, email, password } = req.validBody;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -32,12 +24,12 @@ export const register = async (req, res) => {
 
     // Create User
     const user = await prisma.user.create({
-  data: {
-    full_name,
-    email,
-    password: hashedPassword,
-  },
-});
+      data: {
+        full_name,
+        email,
+        password: hashedPassword,
+      },
+    });
 
     return res.status(201).json({
       success: true,
@@ -61,7 +53,7 @@ export const register = async (req, res) => {
 // Login
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.validBody;
 
     // Check required fields
     if (!email || !password) {
@@ -103,7 +95,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
       },
-      token
+      token,
     });
   } catch (error) {
     console.log(error);
@@ -136,7 +128,16 @@ export const logout = async (req, res) => {
 
 export const me = async (req, res) => {
   try {
-    // Code below
+    const user = req.user;
+
+    return res.status(200).json({
+      success: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    });
   } catch (error) {
     console.log(error);
 
@@ -145,5 +146,4 @@ export const me = async (req, res) => {
       message: "Internal server error",
     });
   }
-  
 };
