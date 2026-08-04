@@ -5,15 +5,7 @@ import { setCookie, clearCookie } from "../utils/generatetoken.js";
 //  REGISTER
 export const register = async (req, res) => {
   try {
-    const { full_name, email, password } = req.body;
-
-    // Check required fields
-    if (!full_name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: "All fields are required",
-      });
-    }
+    const { full_name, email, password } = req.validBody;
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -61,7 +53,7 @@ export const register = async (req, res) => {
 // Login
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.validBody;
 
     // Check required fields
     if (!email || !password) {
