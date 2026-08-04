@@ -43,14 +43,8 @@ export const getAllTodo = async (req, res) => {
 // CREATE a new task
 export const createTodo = async (req, res) => {
   try {
-    const { title, description, priority, status, user_id } = req.body;
-
-    if (!title || !description || !priority || !user_id) {
-      return res.status(400).json({
-        success: false,
-        message: "title, description, priority, and user_id are required",
-      });
-    }
+    const { title, description, priority, status } = req.validBody;
+    const { id } = req.user;
 
     const newTodo = await prisma.tasks.create({
       data: {
@@ -58,7 +52,7 @@ export const createTodo = async (req, res) => {
         description,
         priority, // "low" | "medium" | "high"
         status: status || "todo", // "todo" | "ongoing" | "completed"
-        user_id,
+        user_id: id,
       },
     });
 
