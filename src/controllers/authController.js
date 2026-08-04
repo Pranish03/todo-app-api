@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import { prisma } from "../config/db.js";
-import { clearCookie, setCookie } from "../utils/generatetoken.js";
+import { clearCookie, setCookie } from "../utils/generateToken.js";
 
 //  REGISTER
 export const register = async (req, res) => {
