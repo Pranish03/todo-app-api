@@ -10,12 +10,7 @@ connectDatabase();
 
 
 
-
-
 //Api routes
-
-
-
 
 const app = express();
 
