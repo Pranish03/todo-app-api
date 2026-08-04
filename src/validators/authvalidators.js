@@ -7,10 +7,10 @@ export const registerValidator = z.object({
     .min(3, "name should be at least 3 characters")
     .max(15),
   email: z.email("invalid email address").trim(),
-  password: z.string.trim().min(8, "Password should be of 8 characters"),
+  password: z.string().trim().min(8, "Password should be of 8 characters"),
 });
 
 export const loginValidator = z.object({
   email: z.email("invalid email address").trim(),
-  password: z.string.trim().min(8, "Password should be of 8 characters"),
+  password: z.string().trim().min(8, "Password should be of 8 characters"),
 });
