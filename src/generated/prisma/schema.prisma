@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+// commit
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  full_name String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  tasks     tasks[]
+}
+
+model tasks {
+  id          String        @id @default(uuid())
+  user_id     String        @default(uuid())
+  title       String        @unique
+  description String
+  status      IsStatus      @default(todo)
+  priority    Watchpriority
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+
+  user User @relation(references: [id], fields: [user_id], onDelete: Cascade)
+
+  @@unique([id, user_id])
+}
+
+enum IsStatus {
+  todo
+  ongoing
+  completed
+}
+
+enum Watchpriority {
+  low
+  medium
+  high
+}
