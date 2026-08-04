@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const createTodoValidator = z.object({
+export const createTodoValidator = z.object({
   title: z.string().min(1, "title is required"),
   description: z.string().optional(),
   status: z
